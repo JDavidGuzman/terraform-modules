@@ -25,10 +25,10 @@ resource "aws_subnet" "main" {
   availability_zone_id    = count.index < var.subnetting / 2 ? data.aws_availability_zones.available.zone_ids[0] : data.aws_availability_zones.available.zone_ids[1]
   map_public_ip_on_launch = count.index % 2 == 0 ? true : false
   tags = var.eks == false ? {
-    Name = count.index % 2 == 0 ? "${var.name}-public-subnet-${count.index}" : "${var.name}-private-${count.index}"
+    Name = count.index % 2 == 0 ? "${var.name}-public-subnet-${count.index}" : "${var.name}-private-subnet-${count.index}"
     } : {
-    Name                                            = count.index % 2 == 0 ? "${var.name}-public-subnet-${count.index}" : "${var.name}-private-${count.index}"
-    "kubernetes.io/cluster/${var.eks_cluster_name}-eks-cluster" = "shared"
+    Name                                            = count.index % 2 == 0 ? "${var.name}-public-subnet-${count.index}" : "${var.name}-private-subnet-${count.index}"
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
     "kubernetes.io/role/elb"                        = count.index % 2 == 0 ? 1 : null
     "kubernetes.io/role/internal_elb"               = count.index % 2 == 0 ? null : 1
   }
