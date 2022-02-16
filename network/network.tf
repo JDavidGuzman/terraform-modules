@@ -76,8 +76,14 @@ resource "aws_route_table" "main" {
   }
 }
 
-resource "aws_route_table_association" "main" {
-  count          = var.subnetting
-  subnet_id      = aws_subnet.main[count.index].id
-  route_table_id = count.index % 2 == 0 ? aws_route_table.main[0].id : aws_route_table.main[1].id
+resource "aws_route_table_association" "main_public" {
+  count          = var.subnetting / 2 
+  subnet_id      = aws_subnet.main[count.index * 2].id
+  route_table_id = aws_route_table.main[0].id
+}
+
+resource "aws_route_table_association" "main_private" {
+  count          = var.nat_gateway ? var.subnetting / 2 : 0
+  subnet_id      = aws_subnet.main[count.index * 2 - 1].id
+  route_table_id = aws_route_table.main[1].id
 }
