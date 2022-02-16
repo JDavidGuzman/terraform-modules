@@ -84,6 +84,6 @@ resource "aws_route_table_association" "main_public" {
 
 resource "aws_route_table_association" "main_private" {
   count          = var.nat_gateway ? var.subnetting / 2 : 0
-  subnet_id      = aws_subnet.main[count.index * 2 - 1].id
+  subnet_id      = aws_subnet.main[count.index * 2 + 1].id
   route_table_id = aws_route_table.main[1].id
 }
