@@ -63,7 +63,7 @@ resource "aws_nat_gateway" "main" {
   ]
 }
 resource "aws_route_table" "main" {
-  count  = var.subnetting > 1 ? 2 : 1
+  count  = var.subnetting > 1 && var.nat_gateway ? 2 : 1
   vpc_id = aws_vpc.main.id
 
   route {
