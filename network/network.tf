@@ -72,7 +72,7 @@ resource "aws_route_table" "main" {
   }
 
   tags = {
-    Name = "${var.name}-public-rt"
+    Name = count.index == 0 ? "${var.name}-public-rt" :  "${var.name}-private-rt"
   }
 }
 
