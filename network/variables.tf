@@ -19,3 +19,8 @@ variable "eks_cluster_name" {
   type    = string
   default = null
 }
+
+variable "nat_gateway" {
+  type    = bool
+  default = false
+}

@@ -25,9 +25,9 @@ resource "aws_subnet" "main" {
   availability_zone_id    = count.index < var.subnetting / 2 ? data.aws_availability_zones.available.zone_ids[0] : data.aws_availability_zones.available.zone_ids[1]
   map_public_ip_on_launch = count.index % 2 == 0 ? true : false
   tags = var.eks == false ? {
-    Name = count.index % 2 == 0 ? "${var.name}-public-subnet-${count.index}" : "${var.name}-public-private-${count.index}"
+    Name = count.index % 2 == 0 ? "${var.name}-public-subnet-${count.index}" : "${var.name}-private-${count.index}"
     } : {
-    Name                                            = count.index % 2 == 0 ? "${var.name}-public-subnet-${count.index}" : "${var.name}-public-private-${count.index}"
+    Name                                            = count.index % 2 == 0 ? "${var.name}-public-subnet-${count.index}" : "${var.name}-private-${count.index}"
     "kubernetes.io/cluster/${var.eks_cluster_name}-eks-cluster" = "shared"
     "kubernetes.io/role/elb"                        = count.index % 2 == 0 ? 1 : null
     "kubernetes.io/role/internal_elb"               = count.index % 2 == 0 ? null : 1
@@ -35,7 +35,7 @@ resource "aws_subnet" "main" {
 }
 
 resource "aws_eip" "main" {
-  count = var.subnetting > 1 ? 1 : 0
+  count = var.subnetting > 1 && var.nat_gateway ? 1 : 0
   vpc   = true
   tags = {
     Name = "${var.name}-elastic-ip"
@@ -47,7 +47,7 @@ resource "aws_eip" "main" {
 }
 
 resource "aws_nat_gateway" "main" {
-  count         = var.subnetting > 1 ? 1 : 0
+  count         = var.subnetting > 1 && var.nat_gateway ? 1 : 0
   allocation_id = aws_eip.main[0].id
   subnet_id     = aws_subnet.main[0].id
 
