@@ -12,11 +12,11 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
 resource "aws_iam_role" "eks_main_node_group" {
   name               = "${var.name}-eks-node-group-role"
   assume_role_policy = data.aws_iam_policy_document.instance-assume-role-policy.json
-  managed_policy_arns = [
+  managed_policy_arns = var.nodegroup_iam_policy == null ? [
     "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
     "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  ]
+  ] : var.nodegroup_iam_policy
 }
 
 resource "aws_eks_node_group" "main" {

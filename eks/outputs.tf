@@ -8,7 +8,8 @@ output "eks_cluster" {
 }
 
 output "eks_cluster_auth_token" {
-  value = data.aws_eks_cluster_auth.main.token
+  value     = data.aws_eks_cluster_auth.main.token
+  sensitive = true
 }
 
 output "eks_cluster_ca" {

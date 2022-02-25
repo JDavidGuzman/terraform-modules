@@ -16,7 +16,7 @@ resource "aws_iam_role" "eks_cluster" {
 }
 
 resource "aws_eks_cluster" "main" {
-  name     = "${var.name}"
+  name     = var.name
   role_arn = aws_iam_role.eks_cluster.arn
 
   vpc_config {

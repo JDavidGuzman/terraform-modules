@@ -72,12 +72,12 @@ resource "aws_route_table" "main" {
   }
 
   tags = {
-    Name = count.index == 0 ? "${var.name}-public-rt" :  "${var.name}-private-rt"
+    Name = count.index == 0 ? "${var.name}-public-rt" : "${var.name}-private-rt"
   }
 }
 
 resource "aws_route_table_association" "main_public" {
-  count          = var.subnetting / 2 
+  count          = var.subnetting / 2
   subnet_id      = aws_subnet.main[count.index * 2].id
   route_table_id = aws_route_table.main[0].id
 }

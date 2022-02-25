@@ -10,3 +10,8 @@ variable "instance_type" {
   type    = list(string)
   default = ["t3.micro"]
 }
+
+variable "nodegroup_iam_policy" {
+  type    = list(string)
+  default = null
+}
