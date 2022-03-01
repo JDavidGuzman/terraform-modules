@@ -32,6 +32,7 @@ output "eks_node_group" {
 output "oidc" {
   value = {
     oidc = aws_iam_openid_connect_provider.main[*].arn
-    ingress_controller_role = aws_iam_role.ingress_controller_role[*].arn
+    ingress_controller_role_id = aws_iam_role.ingress_controller_role[*].id
+    ingress_controller_role_arn = aws_iam_role.ingress_controller_role[*].arn
   }
 }
