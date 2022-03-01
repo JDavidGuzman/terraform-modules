@@ -28,3 +28,10 @@ output "eks_node_group" {
     scaling_config = aws_eks_node_group.main.scaling_config
   }
 }
+
+output "oidc" {
+  value = {
+    oidc = aws_iam_openid_connect_provider.main[*].arn
+    ingress_controller_role = aws_iam_role.ingress_controller_role[*].arn
+  }
+}

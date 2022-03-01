@@ -15,3 +15,8 @@ variable "nodegroup_iam_policy" {
   type    = list(string)
   default = null
 }
+
+variable "ingress_controller_serviceaccount" {
+  type    = string
+  default = null
+}
